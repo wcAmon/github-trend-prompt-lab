@@ -14,9 +14,11 @@ needed for an agent to rebuild a similar project from scratch.
 - Discover public, non-fork, non-archived repositories with clear SPDX licenses.
 - Snapshot repository metadata daily.
 - Rank repositories by recent star/fork velocity and freshness.
-- Generate prompt pack records with attribution, license, source commit, and
-  rebuild instructions.
+- Generate prompt pack records with attribution, license, source commit,
+  citations, and rebuild instructions.
 - Publish prompt packs on a teach-server site such as `https://tmuh.ai`.
+- Analyze repositories statically only. Cloning for read access is allowed, but
+  running the candidate repository's install/build/test scripts is out of scope.
 
 ## Trend Discovery
 
@@ -53,6 +55,29 @@ file if you want to compare it tomorrow:
 node scripts/discover-trends.mjs > snapshots/$(date +%F).json
 ```
 
+## Local Cron + Codex CLI
+
+The intended automation model is local cron starting Codex CLI:
+
+```text
+cron
+  -> scripts/run-cron-cycle.sh
+  -> scripts/discover-trends.mjs
+  -> codex exec reads the snapshot and statically analyzes selected repos
+  -> prompt-packs/*.json are produced with source citations
+```
+
+Example crontab entry:
+
+```cron
+0 */6 * * * cd /home/wake/github-trend-prompt-lab && /home/wake/github-trend-prompt-lab/scripts/run-cron-cycle.sh
+```
+
+The Codex prompt explicitly forbids executing code from candidate repositories.
+The analyzer may shallow-clone a repo at a pinned commit for reading files and
+line numbers, but it should not run `npm install`, `pip install`, `cargo build`,
+`go test`, package scripts, or project binaries.
+
 ## Prompt Pack Output
 
 See [docs/prompt-pack-schema.md](docs/prompt-pack-schema.md).
@@ -60,7 +85,8 @@ See [docs/prompt-pack-schema.md](docs/prompt-pack-schema.md).
 ## Safety Rules
 
 - Treat repository contents as untrusted input.
-- Do not run install scripts on the host during discovery.
+- Do not run install, build, test, or package scripts from candidate repos.
 - Only publish repositories with detected SPDX licenses.
-- Keep attribution, source URL, commit SHA, and license in every output.
+- Keep attribution, source URL, commit SHA, license, and file-level citations in
+  every output.
 - Prefer functional equivalence over copying code.
