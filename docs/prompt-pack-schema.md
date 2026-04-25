@@ -33,6 +33,23 @@ another agent to use.
       "supports": "Project purpose and usage"
     }
   ],
+  "documents": {
+    "trend_report": {
+      "title": "Why this repo is trending",
+      "body": "Evidence-based explanation of recent attention and why the repo is timely.",
+      "citation_ids": ["src-001"]
+    },
+    "application_report": {
+      "title": "Where this repo can be applied",
+      "body": "Concrete product, engineering, research, or educational use cases.",
+      "citation_ids": ["src-001"]
+    },
+    "rebuild_prompt": {
+      "title": "Rebuild prompt",
+      "body": "A prompt that uses the trend and application reports to rebuild a functionally equivalent project.",
+      "citation_ids": ["src-001"]
+    }
+  },
   "architecture": {
     "runtime": "Node.js",
     "frameworks": ["Express"],
@@ -75,6 +92,8 @@ Every published prompt pack must include:
 - default branch commit SHA
 - capture timestamp
 - file-level citations for all major claims
+- three top-level documents: trend report, application report, rebuild prompt
+- a generated single HTML page suitable for teach-server hosting
 
 ## Citation Requirements
 
@@ -83,6 +102,11 @@ GitHub blob URLs with line ranges.
 
 Minimum citation coverage:
 
+- trend report: repository metadata, README, docs, release notes, or source
+  citations that support why it is timely or notable
+- application report: README, examples, docs, APIs, or tests that support
+  possible use cases
+- rebuild prompt: source notes that support required behavior and structure
 - project purpose: README or documentation citation
 - license: license file or GitHub license metadata citation
 - build/runtime assumptions: manifest, config, or README citation
@@ -105,6 +129,7 @@ or project binaries.
 
 ## Generation Guidance
 
-The prompt pack should describe the project at the level of behavior and
-architecture. Do not paste large source files. Small signatures, command names,
-route names, and configuration keys are acceptable when needed for clarity.
+The prompt pack should describe the project at the level of behavior,
+architecture, trend rationale, and applications. Do not paste large source
+files. Small signatures, command names, route names, and configuration keys are
+acceptable when needed for clarity.

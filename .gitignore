@@ -3,3 +3,7 @@ node_modules/
 *.log
 logs/
 repos/
+snapshots/*.json
+prompt-packs/*.json
+prompt-packs/INDEX.md
+single-html/*.html

@@ -18,7 +18,9 @@ needed for an agent to rebuild a similar project from scratch.
 - Rank repositories by recent star/fork velocity and freshness.
 - Generate prompt pack records with attribution, license, source commit,
   citations, and rebuild instructions.
-- Publish prompt packs on a teach-server site such as `https://tmuh.ai`.
+- Generate a teach-server-compatible single HTML page for each selected repo.
+- Publish the generated HTML pages under the public user `github_trend_lab` on a
+  teach-server site such as `https://tmuh.ai`.
 - Analyze repositories statically only. Cloning for read access is allowed, but
   running the candidate repository's install/build/test scripts is out of scope.
 
@@ -66,7 +68,8 @@ cron
   -> scripts/run-cron-cycle.sh
   -> scripts/discover-trends.mjs
   -> zodiac runs through `codex exec`, reads the snapshot, and statically analyzes selected repos
-  -> prompt-packs/*.json are produced with source citations
+  -> prompt-packs/*.json and single-html/*.html are produced with source citations
+  -> optional publish step uploads single-html pages to teach-server
 ```
 
 Example crontab entry:
@@ -83,6 +86,12 @@ line numbers, but it should not run `npm install`, `pip install`, `cargo build`,
 ## Prompt Pack Output
 
 See [docs/prompt-pack-schema.md](docs/prompt-pack-schema.md).
+
+Each generated repo page has three visible documents:
+
+1. Why this repo is becoming a trend.
+2. Where this repo can be applied.
+3. Rebuild prompt.
 
 ## Safety Rules
 

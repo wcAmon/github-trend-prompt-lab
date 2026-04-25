@@ -21,6 +21,8 @@ export GITHUB_TOKEN=ghp_your_token
 export CODEX_BIN=/home/wake/.nvm/versions/node/v24.15.0/bin/codex
 export CODEX_MODEL=gpt-5.2
 export MAX_ANALYZE_REPOS=3
+export ZODIAC_TEACH_SERVER_BASE_URL=https://tmuh.ai
+export ZODIAC_TEACH_SERVER_API_KEY=tk_your_github_trend_lab_key
 ```
 
 If Codex's local sandbox cannot start on the host, the log may contain:
@@ -74,3 +76,16 @@ Forbidden:
 
 Verification of rebuilt projects should be a separate, explicitly sandboxed
 phase after the prompt pack exists.
+
+## Publishing
+
+When `ZODIAC_TEACH_SERVER_API_KEY` is set, the runner uploads generated
+`single-html/*.html` files to teach-server using the same `POST /api/pages`
+endpoint as normal users. The API key should belong to the public
+`github_trend_lab` user.
+
+The public read-only dashboard is:
+
+```text
+https://tmuh.ai/u/github_trend_lab/
+```

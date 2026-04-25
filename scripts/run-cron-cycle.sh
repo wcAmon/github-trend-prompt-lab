@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
-mkdir -p snapshots prompt-packs logs repos
+mkdir -p snapshots prompt-packs single-html logs repos
 
 if [[ -f "$HOME/.config/github-trend-prompt-lab.env" ]]; then
   # shellcheck disable=SC1090
@@ -36,3 +36,7 @@ if [[ -n "$CODEX_MODEL" ]]; then
 fi
 
 "$CODEX_BIN" "${CODEX_ARGS[@]}" "$PROMPT" > "logs/zodiac-${STAMP}.log" 2>&1
+
+if [[ -n "${ZODIAC_TEACH_SERVER_API_KEY:-}" ]]; then
+  node scripts/publish-pages.mjs
+fi
