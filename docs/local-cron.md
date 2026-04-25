@@ -94,13 +94,11 @@ Common one-shot variants:
 ```bash
 ./run_zodiac.sh --repos 1 --no-publish
 ./run_zodiac.sh --repos 1 --keep-repos
-./run_zodiac.sh --repos 1 --sandbox
+./run_zodiac.sh --repos 1 --bypass-sandbox
 ```
 
-On the current tmuh.ai host, `run_zodiac.sh` defaults to
-`ZODIAC_BYPASS_CODEX_SANDBOX=1` because the Codex CLI sandbox cannot configure
-bubblewrap loopback networking. Use `--sandbox` only after the host sandbox
-issue is fixed.
+On the current tmuh.ai host, `run_zodiac.sh` defaults to sandbox mode. Use
+`--bypass-sandbox` only as a fallback if the host sandbox regresses.
 
 Duplicate repository handling is intentionally update-based. The generated
 single HTML filename and publish slug are derived from `<owner>--<repo>`, so a
