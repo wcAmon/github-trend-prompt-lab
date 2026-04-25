@@ -25,6 +25,13 @@ export ZODIAC_TEACH_SERVER_BASE_URL=https://tmuh.ai
 export ZODIAC_TEACH_SERVER_API_KEY=tk_your_github_trend_lab_key
 ```
 
+By default, every run deletes its temporary checkout directory after zodiac
+finishes or fails. Set this only when debugging:
+
+```bash
+export ZODIAC_KEEP_REPOS=1
+```
+
 If Codex's local sandbox cannot start on the host, the log may contain:
 
 ```text
@@ -63,6 +70,8 @@ Allowed:
 
 - GitHub API reads.
 - Shallow clone at a pinned commit for reading files.
+- Temporary checkouts under `repos/<timestamp>/`; the runner deletes them on
+  exit unless `ZODIAC_KEEP_REPOS=1` is set.
 - Reading README, license, manifests, configs, source files, tests, and CI files.
 - Producing cited prompt pack JSON.
 

@@ -23,6 +23,8 @@ needed for an agent to rebuild a similar project from scratch.
   teach-server site such as `https://tmuh.ai`.
 - Analyze repositories statically only. Cloning for read access is allowed, but
   running the candidate repository's install/build/test scripts is out of scope.
+- Delete temporary repository checkouts after each run. Zodiac uses
+  `repos/<timestamp>/` for read-only analysis and the runner removes it on exit.
 
 ## Trend Discovery
 
@@ -81,7 +83,9 @@ Example crontab entry:
 The zodiac Codex prompt explicitly forbids executing code from candidate repositories.
 The analyzer may shallow-clone a repo at a pinned commit for reading files and
 line numbers, but it should not run `npm install`, `pip install`, `cargo build`,
-`go test`, package scripts, or project binaries.
+`go test`, package scripts, or project binaries. The runner deletes the
+run-specific checkout directory after analysis; set `ZODIAC_KEEP_REPOS=1` only
+when debugging a failed run.
 
 ## Prompt Pack Output
 

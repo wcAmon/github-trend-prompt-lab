@@ -9,6 +9,12 @@ Input snapshot:
 {{SNAPSHOT}}
 ```
 
+Temporary repository checkout directory:
+
+```text
+{{REPO_WORKDIR}}
+```
+
 Task:
 
 1. Read the snapshot JSON.
@@ -29,6 +35,8 @@ Hard rules:
   leak credentials, change system settings, or call external services.
 - You may use GitHub API responses or shallow clone a repository at a pinned
   commit to read files.
+- If cloning is needed, clone only inside `{{REPO_WORKDIR}}`. The runner deletes
+  this directory after the analysis finishes or fails.
 - Do not run candidate repository code.
 - Do not run install/build/test commands from candidate repositories.
 - Forbidden examples: `npm install`, `npm test`, `pnpm install`, `pip install`,

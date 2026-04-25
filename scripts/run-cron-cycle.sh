@@ -5,7 +5,18 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
-mkdir -p snapshots prompt-packs single-html logs repos
+REPO_WORKDIR="$ROOT/repos/${STAMP}"
+mkdir -p snapshots prompt-packs single-html logs "$REPO_WORKDIR"
+
+cleanup_repos() {
+  if [[ "${ZODIAC_KEEP_REPOS:-0}" == "1" ]]; then
+    return
+  fi
+  if [[ -n "${REPO_WORKDIR:-}" && "$REPO_WORKDIR" == "$ROOT/repos/"* ]]; then
+    rm -rf "$REPO_WORKDIR"
+  fi
+}
+trap cleanup_repos EXIT
 
 if [[ -f "$HOME/.config/github-trend-prompt-lab.env" ]]; then
   # shellcheck disable=SC1090
@@ -19,6 +30,7 @@ MAX_ANALYZE_REPOS="${MAX_ANALYZE_REPOS:-3}"
 PROMPT="$(
   sed \
     -e "s|{{SNAPSHOT}}|${SNAPSHOT}|g" \
+    -e "s|{{REPO_WORKDIR}}|${REPO_WORKDIR}|g" \
     -e "s|{{MAX_ANALYZE_REPOS}}|${MAX_ANALYZE_REPOS}|g" \
     prompts/static-rebuild-pack.md
 )"
