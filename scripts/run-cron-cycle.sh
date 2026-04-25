@@ -18,7 +18,7 @@ cleanup_repos() {
 }
 trap cleanup_repos EXIT
 
-if [[ -f "$HOME/.config/github-trend-prompt-lab.env" ]]; then
+if [[ "${ZODIAC_SKIP_ENV_FILE:-0}" != "1" && -f "$HOME/.config/github-trend-prompt-lab.env" ]]; then
   # shellcheck disable=SC1090
   source "$HOME/.config/github-trend-prompt-lab.env"
 fi

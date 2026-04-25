@@ -71,6 +71,10 @@ cd /home/wake/github-trend-prompt-lab
 ./run_zodiac.sh
 ```
 
+The manual runner prints a compact summary when it exits, including the latest
+log path and generated file counts. On failure, it also prints the last 40 log
+lines so sandbox or API errors are visible immediately.
+
 Common one-shot variants:
 
 ```bash

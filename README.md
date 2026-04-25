@@ -93,6 +93,9 @@ Run zodiac once by hand:
 ./run_zodiac.sh
 ```
 
+The manual runner prints the exit code, latest log path, and generated file
+counts. If the run fails, it prints the last 40 log lines.
+
 Useful manual options:
 
 ```bash
