@@ -49,6 +49,6 @@ fi
 
 "$CODEX_BIN" "${CODEX_ARGS[@]}" "$PROMPT" > "logs/zodiac-${STAMP}.log" 2>&1
 
-if [[ -n "${ZODIAC_TEACH_SERVER_API_KEY:-}" ]]; then
+if [[ "${ZODIAC_SKIP_PUBLISH:-0}" != "1" && -n "${ZODIAC_TEACH_SERVER_API_KEY:-}" ]]; then
   node scripts/publish-pages.mjs
 fi

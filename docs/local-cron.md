@@ -62,6 +62,29 @@ Check logs:
 ls -lt /home/wake/github-trend-prompt-lab/logs/zodiac-*.log
 ```
 
+## Manual Run
+
+Run zodiac once with conservative defaults:
+
+```bash
+cd /home/wake/github-trend-prompt-lab
+./run_zodiac.sh
+```
+
+Common one-shot variants:
+
+```bash
+./run_zodiac.sh --repos 1 --no-publish
+./run_zodiac.sh --repos 1 --bypass-sandbox
+./run_zodiac.sh --repos 1 --keep-repos
+```
+
+Duplicate repository handling is intentionally update-based. The generated
+single HTML filename and publish slug are derived from `<owner>--<repo>`, so a
+later zodiac run for the same repository overwrites the existing local HTML and
+updates the existing `github_trend_lab` hosted page. Very long repo names use a
+stable hash suffix in the slug to avoid collisions.
+
 ## Static-Only Policy
 
 The automated Codex job is for analysis and prompt-pack generation only.

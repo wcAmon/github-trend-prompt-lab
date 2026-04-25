@@ -87,6 +87,24 @@ line numbers, but it should not run `npm install`, `pip install`, `cargo build`,
 run-specific checkout directory after analysis; set `ZODIAC_KEEP_REPOS=1` only
 when debugging a failed run.
 
+Run zodiac once by hand:
+
+```bash
+./run_zodiac.sh
+```
+
+Useful manual options:
+
+```bash
+./run_zodiac.sh --repos 1 --no-publish
+./run_zodiac.sh --repos 1 --bypass-sandbox
+./run_zodiac.sh --repos 1 --keep-repos
+```
+
+Publishing uses a stable slug derived from `<owner>--<repo>` with a hash suffix
+for long names, so seeing the same repository again updates the existing
+`github_trend_lab` page instead of creating a duplicate page.
+
 ## Prompt Pack Output
 
 See [docs/prompt-pack-schema.md](docs/prompt-pack-schema.md).

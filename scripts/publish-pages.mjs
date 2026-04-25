@@ -2,6 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
 const root = process.cwd();
 const baseUrl = process.env.ZODIAC_TEACH_SERVER_BASE_URL || 'https://tmuh.ai';
@@ -20,8 +21,18 @@ if (!fs.existsSync(dir)) {
 
 const files = fs.readdirSync(dir).filter((name) => name.endsWith('.html')).sort();
 
+function slugForFile(file) {
+  const sourceKey = file.replace(/\.html$/, '');
+  const normalized = sourceKey.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+  if (normalized.length <= 40) return normalized;
+
+  const hash = crypto.createHash('sha1').update(sourceKey).digest('hex').slice(0, 8);
+  const prefix = normalized.slice(0, 31).replace(/-+$/g, '');
+  return `${prefix}-${hash}`;
+}
+
 for (const file of files) {
-  const slug = file.replace(/\.html$/, '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').slice(0, 40).replace(/^-+|-+$/g, '');
+  const slug = slugForFile(file);
   if (!slug || slug.length < 3) {
     console.warn(`Skipping ${file}: cannot derive valid slug`);
     continue;
@@ -42,5 +53,5 @@ for (const file of files) {
     process.exitCode = 1;
     continue;
   }
-  console.log(`Published ${file}: ${body}`);
+  console.log(`Published or updated ${file}: ${body}`);
 }
