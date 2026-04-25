@@ -48,6 +48,20 @@ Use that only on a machine where you accept that Codex can run without its own
 sandbox. The zodiac prompt still forbids executing candidate repository code,
 but this setting removes the CLI sandbox enforcement layer.
 
+## Secret Boundary
+
+`scripts/run-cron-cycle.sh` keeps publishing separate from analysis:
+
+- The outer runner may read `ZODIAC_TEACH_SERVER_API_KEY` from the local env file.
+- The Codex/zodiac child process is launched with publish and GitHub tokens
+  removed from its environment.
+- Zodiac only writes `prompt-packs/` and `single-html/`.
+- After Codex exits successfully, the outer runner calls `scripts/publish-pages.mjs`
+  to upload HTML to teach-server.
+
+This keeps the `github_trend_lab` publish key out of repository analysis, even
+when `ZODIAC_BYPASS_CODEX_SANDBOX=1` is used.
+
 ## Crontab
 
 Run every six hours:

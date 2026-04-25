@@ -44,6 +44,9 @@ Hard rules:
   binaries, shell scripts from the candidate repo.
 - Do not copy long source files into the output.
 - Every important claim must cite its source.
+- Do not publish pages or call teach-server APIs. The outer runner handles
+  publishing after your files are written.
+- Do not request, print, or depend on API keys or tokens.
 
 Required citation shape:
 

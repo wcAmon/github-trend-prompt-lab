@@ -47,7 +47,12 @@ if [[ -n "$CODEX_MODEL" ]]; then
   CODEX_ARGS+=(--model "$CODEX_MODEL")
 fi
 
-"$CODEX_BIN" "${CODEX_ARGS[@]}" "$PROMPT" > "logs/zodiac-${STAMP}.log" 2>&1
+env \
+  -u ZODIAC_TEACH_SERVER_API_KEY \
+  -u GITHUB_TOKEN \
+  -u GH_TOKEN \
+  -u GIT_ASKPASS \
+  "$CODEX_BIN" "${CODEX_ARGS[@]}" "$PROMPT" > "logs/zodiac-${STAMP}.log" 2>&1
 
 if [[ "${ZODIAC_SKIP_PUBLISH:-0}" != "1" && -n "${ZODIAC_TEACH_SERVER_API_KEY:-}" ]]; then
   node scripts/publish-pages.mjs

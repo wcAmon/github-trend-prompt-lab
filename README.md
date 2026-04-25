@@ -109,6 +109,10 @@ On the current tmuh.ai host, `run_zodiac.sh` defaults to
 bubblewrap loopback networking. Use `--sandbox` only after the host sandbox
 issue is fixed.
 
+The teach-server publish key is not passed into the Codex/zodiac child process.
+The outer runner removes publish and GitHub tokens before analysis, then runs
+`scripts/publish-pages.mjs` only after zodiac exits successfully.
+
 Publishing uses a stable slug derived from `<owner>--<repo>` with a hash suffix
 for long names, so seeing the same repository again updates the existing
 `github_trend_lab` page instead of creating a duplicate page.
