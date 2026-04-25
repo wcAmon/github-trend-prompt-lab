@@ -100,9 +100,14 @@ Useful manual options:
 
 ```bash
 ./run_zodiac.sh --repos 1 --no-publish
-./run_zodiac.sh --repos 1 --bypass-sandbox
 ./run_zodiac.sh --repos 1 --keep-repos
+./run_zodiac.sh --repos 1 --sandbox
 ```
+
+On the current tmuh.ai host, `run_zodiac.sh` defaults to
+`ZODIAC_BYPASS_CODEX_SANDBOX=1` because the Codex CLI sandbox cannot configure
+bubblewrap loopback networking. Use `--sandbox` only after the host sandbox
+issue is fixed.
 
 Publishing uses a stable slug derived from `<owner>--<repo>` with a hash suffix
 for long names, so seeing the same repository again updates the existing

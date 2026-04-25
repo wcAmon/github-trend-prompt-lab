@@ -17,7 +17,8 @@ Options:
   --max-size-kb N    Maximum repository size in KiB. Default: 2500
   --no-publish       Generate local prompt packs and HTML, but do not upload.
   --keep-repos       Keep temporary repo checkouts for debugging.
-  --bypass-sandbox   Run Codex CLI without its sandbox.
+  --bypass-sandbox   Run Codex CLI without its sandbox. Default on this host.
+  --sandbox          Try to run Codex CLI with its sandbox.
   -h, --help         Show this help.
 
 Outputs:
@@ -30,6 +31,8 @@ Notes:
   This script reads ~/.config/github-trend-prompt-lab.env when present.
   CLI options override values from that file.
   Temporary repo checkouts are deleted by default.
+  This host currently needs bypass_sandbox=1 because bubblewrap cannot configure
+  loopback networking inside the Codex CLI sandbox.
 USAGE
 }
 
@@ -58,6 +61,7 @@ MAX_ANALYZE_REPOS="${MAX_ANALYZE_REPOS:-1}"
 PER_PAGE="${PER_PAGE:-2}"
 MIN_STARS="${MIN_STARS:-1000}"
 MAX_SIZE_KB="${MAX_SIZE_KB:-2500}"
+ZODIAC_BYPASS_CODEX_SANDBOX="${ZODIAC_BYPASS_CODEX_SANDBOX:-1}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -87,6 +91,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --bypass-sandbox)
       ZODIAC_BYPASS_CODEX_SANDBOX=1
+      shift
+      ;;
+    --sandbox)
+      ZODIAC_BYPASS_CODEX_SANDBOX=0
       shift
       ;;
     -h|--help)
