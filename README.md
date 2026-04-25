@@ -109,7 +109,10 @@ On the current tmuh.ai host, `run_zodiac.sh` defaults to sandbox mode. Use
 
 The teach-server publish key is not passed into the Codex/zodiac child process.
 The outer runner removes publish and GitHub tokens before analysis, then runs
-`scripts/publish-pages.mjs` only after zodiac exits successfully.
+`scripts/validate-outputs.mjs` and `scripts/publish-pages.mjs` after zodiac
+finishes. If Codex returns a non-zero status after writing valid files, the
+runner publishes only after local output validation passes for the current
+snapshot timestamp.
 
 Publishing uses a stable slug derived from `<owner>--<repo>` with a hash suffix
 for long names, so seeing the same repository again updates the existing

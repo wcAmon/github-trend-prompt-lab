@@ -56,8 +56,11 @@ but this setting removes the CLI sandbox enforcement layer.
 - The Codex/zodiac child process is launched with publish and GitHub tokens
   removed from its environment.
 - Zodiac only writes `prompt-packs/` and `single-html/`.
-- After Codex exits successfully, the outer runner calls `scripts/publish-pages.mjs`
-  to upload HTML to teach-server.
+- After Codex finishes, the outer runner validates generated JSON and HTML, then
+  calls `scripts/publish-pages.mjs` to upload HTML to teach-server.
+- If Codex returns a non-zero status after writing valid files, publishing still
+  proceeds only after `scripts/validate-outputs.mjs` passes for the current
+  snapshot timestamp.
 
 This keeps the `github_trend_lab` publish key out of repository analysis, even
 when `ZODIAC_BYPASS_CODEX_SANDBOX=1` is used.

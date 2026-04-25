@@ -47,13 +47,20 @@ if [[ -n "$CODEX_MODEL" ]]; then
   CODEX_ARGS+=(--model "$CODEX_MODEL")
 fi
 
+CODEX_STATUS=0
 env \
   -u ZODIAC_TEACH_SERVER_API_KEY \
   -u GITHUB_TOKEN \
   -u GH_TOKEN \
   -u GIT_ASKPASS \
-  "$CODEX_BIN" "${CODEX_ARGS[@]}" "$PROMPT" > "logs/zodiac-${STAMP}.log" 2>&1
+  "$CODEX_BIN" "${CODEX_ARGS[@]}" "$PROMPT" > "logs/zodiac-${STAMP}.log" 2>&1 || CODEX_STATUS=$?
+
+node scripts/validate-outputs.mjs --snapshot "$SNAPSHOT"
 
 if [[ "${ZODIAC_SKIP_PUBLISH:-0}" != "1" && -n "${ZODIAC_TEACH_SERVER_API_KEY:-}" ]]; then
   node scripts/publish-pages.mjs
+fi
+
+if [[ "$CODEX_STATUS" -ne 0 ]]; then
+  echo "zodiac completed with Codex exit code ${CODEX_STATUS}, but validated outputs were published." >&2
 fi
