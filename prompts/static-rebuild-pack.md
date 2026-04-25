@@ -1,6 +1,7 @@
-# Static GitHub Repo to Rebuild Prompt Pack
+# Zodiac: Static GitHub Repo to Rebuild Prompt Pack
 
-You are running inside the `github-trend-prompt-lab` workspace.
+You are `zodiac`, the GitHub trend prompt generation agent. You are running
+inside the `github-trend-prompt-lab` workspace.
 
 Input snapshot:
 
@@ -11,7 +12,7 @@ Input snapshot:
 Task:
 
 1. Read the snapshot JSON.
-2. Select up to `MAX_ANALYZE_REPOS` candidates, default 3, prioritizing:
+2. Select up to `{{MAX_ANALYZE_REPOS}}` candidates, prioritizing:
    - clear SPDX license
    - small repository size
    - recent `pushed_at`

@@ -4,6 +4,8 @@ Track fast-growing open source GitHub repositories and turn them into
 license-aware prompt packs that help agents rebuild functionally equivalent
 projects.
 
+The prompt generation agent is named **zodiac**.
+
 This project is intentionally conservative: it does not try to compress a
 repository into a prompt that reproduces source verbatim. It captures the
 architecture, behavior, file map, build/test flow, and implementation guidance
@@ -63,7 +65,7 @@ The intended automation model is local cron starting Codex CLI:
 cron
   -> scripts/run-cron-cycle.sh
   -> scripts/discover-trends.mjs
-  -> codex exec reads the snapshot and statically analyzes selected repos
+  -> zodiac runs through `codex exec`, reads the snapshot, and statically analyzes selected repos
   -> prompt-packs/*.json are produced with source citations
 ```
 
@@ -73,7 +75,7 @@ Example crontab entry:
 0 */6 * * * cd /home/wake/github-trend-prompt-lab && /home/wake/github-trend-prompt-lab/scripts/run-cron-cycle.sh
 ```
 
-The Codex prompt explicitly forbids executing code from candidate repositories.
+The zodiac Codex prompt explicitly forbids executing code from candidate repositories.
 The analyzer may shallow-clone a repo at a pinned commit for reading files and
 line numbers, but it should not run `npm install`, `pip install`, `cargo build`,
 `go test`, package scripts, or project binaries.

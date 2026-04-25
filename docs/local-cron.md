@@ -2,7 +2,8 @@
 
 This project is designed to run from the host machine with cron. Cron starts a
 small shell runner; the runner captures a GitHub trend snapshot and then starts
-Codex CLI in non-interactive mode to produce static rebuild prompt packs.
+Codex CLI in non-interactive mode. The prompt generation agent is named
+**zodiac**.
 
 ## Environment
 
@@ -22,6 +23,22 @@ export CODEX_MODEL=gpt-5.2
 export MAX_ANALYZE_REPOS=3
 ```
 
+If Codex's local sandbox cannot start on the host, the log may contain:
+
+```text
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+```
+
+The runner supports an explicit escape hatch:
+
+```bash
+export ZODIAC_BYPASS_CODEX_SANDBOX=1
+```
+
+Use that only on a machine where you accept that Codex can run without its own
+sandbox. The zodiac prompt still forbids executing candidate repository code,
+but this setting removes the CLI sandbox enforcement layer.
+
 ## Crontab
 
 Run every six hours:
@@ -33,7 +50,7 @@ Run every six hours:
 Check logs:
 
 ```bash
-ls -lt /home/wake/github-trend-prompt-lab/logs
+ls -lt /home/wake/github-trend-prompt-lab/logs/zodiac-*.log
 ```
 
 ## Static-Only Policy

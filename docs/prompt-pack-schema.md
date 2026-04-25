@@ -1,6 +1,7 @@
 # Prompt Pack Schema
 
-Each prompt pack should be JSON-serializable and easy for another agent to use.
+Each prompt pack produced by **zodiac** should be JSON-serializable and easy for
+another agent to use.
 
 ```json
 {
