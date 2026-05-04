@@ -42,6 +42,7 @@ if [[ "${ZODIAC_BYPASS_CODEX_SANDBOX:-0}" == "1" ]]; then
   CODEX_ARGS+=(--dangerously-bypass-approvals-and-sandbox)
 else
   CODEX_ARGS+=(--sandbox workspace-write --full-auto)
+  CODEX_ARGS+=(-c 'sandbox_workspace_write.network_access=true')
 fi
 if [[ -n "$CODEX_MODEL" ]]; then
   CODEX_ARGS+=(--model "$CODEX_MODEL")
