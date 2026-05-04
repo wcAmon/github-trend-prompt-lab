@@ -24,6 +24,12 @@ function listFiles(dir, ext) {
     .sort();
 }
 
+function findDocument(documents, name) {
+  if (!documents) return undefined;
+  if (Array.isArray(documents)) return documents.find((d) => d && d.id === name);
+  return documents[name];
+}
+
 const packFiles = listFiles(packDir, '.json');
 const htmlFiles = listFiles(htmlDir, '.html');
 
@@ -64,7 +70,7 @@ for (const packFile of packFiles) {
   if (!pack.source_repository?.license_key) fail(`${packFile} missing source_repository.license_key`);
   if (!Array.isArray(pack.source_notes) || pack.source_notes.length === 0) fail(`${packFile} has no source_notes`);
   for (const name of requiredDocuments) {
-    const document = pack.documents?.[name];
+    const document = findDocument(pack.documents, name);
     const body = typeof document === 'string' ? document : document?.body;
     if (typeof body !== 'string' || body.trim().length === 0) {
       fail(`${packFile} missing documents.${name}`);

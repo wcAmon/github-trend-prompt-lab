@@ -66,7 +66,9 @@ Prompt pack requirements:
 - Include source repository URL, commit SHA, license key, and capture timestamp.
 - Include trend metadata from the snapshot.
 - Include `source_notes[]` with file-level citations.
-- Include exactly three main documents:
+- Include exactly three main documents under the `documents` object,
+  keyed by id (NOT an array). Each value is an object with `body` (string).
+  The three required keys are:
   1. `trend_report`: why this repository is becoming a trend.
   2. `application_report`: where this repository or its ideas can be applied.
   3. `rebuild_prompt`: a cited prompt for rebuilding a functionally equivalent
@@ -81,6 +83,45 @@ Prompt pack requirements:
   unsupported details.
 - `test_prompt` should describe tests to write for the rebuilt project, not
   tests to run in the original candidate repository.
+
+Required JSON skeleton (illustrative; real bodies must be detailed and cited):
+
+```json
+{
+  "schema_version": "1",
+  "generator": "zodiac",
+  "capture_timestamp": "<from snapshot.captured_at>",
+  "source_repository": {
+    "repo": "owner/name",
+    "url": "https://github.com/owner/name",
+    "commit_sha": "<pinned commit sha>",
+    "default_branch": "main",
+    "license_key": "mit"
+  },
+  "trend_metadata": { "stars": 0, "forks": 0, "pushed_at": "..." },
+  "source_notes": [
+    { "id": "readme-purpose", "repo": "owner/name", "commit_sha": "...",
+      "path": "README.md", "lines": "1-20",
+      "url": "https://github.com/owner/name/blob/<sha>/README.md#L1-L20",
+      "supports": "Project purpose" }
+  ],
+  "documents": {
+    "trend_report":       { "title": "Why ...",   "body": "..." },
+    "application_report": { "title": "Where ...", "body": "..." },
+    "rebuild_prompt":     { "title": "Rebuild prompt", "body": "..." }
+  },
+  "architecture": "...",
+  "file_map": [ { "path": "README.md", "role": "...", "citation_ids": ["readme-purpose"] } ],
+  "behavior": "...",
+  "implementation_prompt": "...",
+  "test_prompt": "...",
+  "known_gaps": "...",
+  "verification": { "status": "static-only", "commands_run": [], "not_run": [], "notes": "..." }
+}
+```
+
+The `documents` field MUST be an object keyed by `trend_report`,
+`application_report`, and `rebuild_prompt`. Do not emit an array.
 
 Single HTML requirements:
 
